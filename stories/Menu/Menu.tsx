@@ -87,6 +87,6 @@ const menu: IMenuItem[] = [
 ]
 
 export const MenuExam = () => {
-  const isCollapsed = boolean('isCollapsed', true)
+  const isCollapsed = boolean('isCollapsed', false)
   return <Menu data={menu} isCollapsed={isCollapsed} />
 }

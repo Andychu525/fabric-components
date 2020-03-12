@@ -6,7 +6,7 @@ import { IMenuStyles, IMenuStyleProps } from './Menu.types'
  */
 const menuWidth = 280
 const menuCollapsedWidth = 48
-const menuBackgroundColor = NeutralColors.white
+const menuBackgroundColor = NeutralColors.gray40
 const menuTextColor = NeutralColors.black
 const menuFontSize = 14
 const menuBorder = '1px solid #EEE'
@@ -22,7 +22,7 @@ const menuGroupSeparatorWithGroupNameHeight = 70
  */
 const menuItemHeight = 48
 const menuItemIndentSize = 50
-const menuItemHoverColor = NeutralColors.gray30
+const menuItemHoverColor = NeutralColors.gray60
 const MenuItemSelectColor = NeutralColors.gray60
 const shortenedIconWidth = 32
 
@@ -31,6 +31,8 @@ export const getStyles = (props: IMenuStyleProps): IMenuStyles => {
   return {
     root: {
       width: isCollapsed ? menuCollapsedWidth : menuWidth,
+      transition: 'width 0.2s',
+      // transitionTimingFunction: 'cubic-bezier(0.7,0.1,0.1,0.7)',
       backgroundColor: menuBackgroundColor,
       borderRight: menuBorder,
       color: menuTextColor,

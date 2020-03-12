@@ -1,5 +1,5 @@
 import React from 'react'
-import { IMenuProps, IMenuState, IMenuItem, IMenuStyleProps, IMenuStyles } from './Menu.types'
+import { IMenuProps, IMenuState, IMenuItem, IMenuStyleProps, IMenuStyles, MenuItemType } from './Menu.types'
 import { classNamesFunction, AnimationClassNames, styled } from 'office-ui-fabric-react'
 import { MenuItem } from './MenuItem'
 import { getStyles } from './Menu.styles'
@@ -16,9 +16,13 @@ class MenuComponent extends React.Component<IMenuProps, IMenuState> {
   }
 
   private _onItemClickHandle(item: IMenuItem) {
-    if (this._itemHasChildren(item)) {
-      item.isExpanded = !item.isExpanded
-      this.setState({})
+    if (item.type === MenuItemType.Toggle) {
+      this.setState({ isCollapsed: !this.state.isCollapsed })
+    } else {
+      if (this._itemHasChildren(item)) {
+        item.isExpanded = !item.isExpanded
+        this.setState({})
+      }
     }
   }
 
@@ -51,6 +55,7 @@ class MenuComponent extends React.Component<IMenuProps, IMenuState> {
     if (items.length === 0) {
       return null
     }
+
     const { isCollapsed } = this.state
 
     return (
@@ -58,7 +63,11 @@ class MenuComponent extends React.Component<IMenuProps, IMenuState> {
         {items.map(item => (
           <li role='listitem' key={item.key} title={item.title}>
             {this._renderItem(item, nestingLevel)}
-            {!isCollapsed && item.isExpanded && this._renderItems(item.items || [], nestingLevel + 1)}
+            {!isCollapsed && item.isExpanded && (
+              <div className={`${AnimationClassNames.slideDownIn20}`}>
+                {this._renderItems(item.items || [], nestingLevel + 1)}
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -83,6 +92,11 @@ class MenuComponent extends React.Component<IMenuProps, IMenuState> {
     )
   }
 
+  private _renderToggle() {
+    const toggle: IMenuItem = { icon: 'GlobalNavButton', type: MenuItemType.Toggle }
+    return this._renderItem(toggle, 0)
+  }
+
   render() {
     const { styles, theme, data } = this.props
     const { isCollapsed } = this.state
@@ -91,7 +105,12 @@ class MenuComponent extends React.Component<IMenuProps, IMenuState> {
     if (!data || data.length === 0) {
       return null
     }
-    return <div className={classNames.root}>{data.map((group, index) => this._renderGroup(group, index))}</div>
+    return (
+      <div className={classNames.root}>
+        {this._renderToggle()}
+        {data.map((group, index) => this._renderGroup(group, index))}
+      </div>
+    )
   }
 }
 

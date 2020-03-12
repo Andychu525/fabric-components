@@ -1,6 +1,11 @@
 import { IStyle, ITheme } from 'office-ui-fabric-react/lib/Styling'
 import { IIconProps, IStyleFunctionOrObject } from 'office-ui-fabric-react'
 
+export enum MenuItemType {
+  Normal,
+  Toggle
+}
+
 export interface IMenuItem {
   title?: string
   url?: string
@@ -12,6 +17,7 @@ export interface IMenuItem {
   iconProps?: IIconProps
   isExpanded?: boolean
   groupName?: string
+  type?: MenuItemType
 }
 
 export interface IMenuStyles {
